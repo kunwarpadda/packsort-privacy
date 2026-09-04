@@ -23,13 +23,24 @@
     <nav><a href="index.html">← PackSort support</a></nav>
     <article>
       <h1>PackSort Privacy Policy</h1>
-      <p class="meta">Effective August 29, 2026</p>
+      <p class="meta">Effective September 3, 2026</p>
       <p>Kunwarbir Singh Padda provides PackSort to help authorized warehouse sorting teams route packages using configurations supplied by their organization.</p>
 
       <h2>Data handled by PackSort</h2>
-      <p>PackSort may process postal-code characters, street names, civic numbers, selected routes, speech-recognition results, corrections, scan history, and diagnostic flags. This operational information is used to route packages and help supervisors investigate routing results. It is stored locally on the device unless a user deliberately exports it.</p>
+      <p>PackSort may process postal-code characters, street names, civic numbers, selected routes, speech-recognition results, corrections, scan history, and diagnostic flags. This operational information is used to route packages and help supervisors investigate routing results.</p>
+      <p>Most of it stays on the device. The exception is wrong-driver reports, which contain a delivery address and are uploaded to the employee&rsquo;s own depot &mdash; see &ldquo;Depot configuration and wrong-driver reports&rdquo; below. Scan history stays on the device and is not uploaded.</p>
       <p>Authorized users sign in with an administrator-created email and password. PackSort uses Google Firebase Authentication to process the account email, password, authentication identifier, user-agent information, and IP address for sign-in, account security, and access management. Public registration is not available.</p>
       <p>Firebase Remote Config and Firebase Installations process an installation identifier and basic app/device context—including country and language codes, time zone, operating-system and app versions—to provide the global access status and minimum supported version. PackSort does not use Firebase Analytics, Crashlytics, advertising, or third-party marketing SDKs.</p>
+
+      <h2>Depot configuration and wrong-driver reports</h2>
+      <p>An employee&rsquo;s account belongs to one depot and holds one role, manager or worker. PackSort stores that assignment on the sign-in token and, for administration, in Cloud Firestore. The administrative record holds the account email, the depot and the role, and nothing else. It is written only by the developer&rsquo;s provisioning tool and never by the app, and it is readable by that account and by managers of the same depot.</p>
+      <p>Each depot has one published routing configuration. PackSort stores it in Cloud Firestore and Cloud Storage, and every phone in that depot downloads a copy. It contains routes, driver names, bays, street rules and postal-code mappings supplied by the organization. It does not contain package recipients.</p>
+      <p>When PackSort routes a package to the wrong driver, a worker can report it. A report contains the postal code, the street name and civic number the worker entered, the driver PackSort chose, the driver the worker chose, the configuration revision in use, the reporting account, and the time. <strong>A report therefore contains a delivery address.</strong> It does not contain a recipient name, a tracking number, or any image.</p>
+      <p>Reports exist so a manager can decide whether the depot&rsquo;s routing needs changing. They are readable only by managers of the same depot, are written only by the depot&rsquo;s own devices, and are not sent anywhere else. A manager reviewing a report sees the email of the account that filed it, because the same address reported five times by one person means something different from the same address reported by five people, and a decision to change a depot&rsquo;s routing turns on that difference.</p>
+      <p>A report a manager has resolved is deleted after 90 days; the published revision that resolved it already records the outcome, so the address itself is not the part worth keeping. A worker&rsquo;s device holds an unsent report until it can be uploaded, and discards it once it has been.</p>
+
+      <h2>Civic address data</h2>
+      <p>An employee may choose to download the Capital Regional District&rsquo;s public civic-address dataset directly to their device. The CRD receives ordinary request information such as the device&rsquo;s IP address and the PackSort user agent. The downloaded addresses are stored only in PackSort&rsquo;s local app storage, are removable in the app, and are not hosted, proxied, exported or redistributed by PackSort.</p>
 
       <h2>Camera, microphone, and maps</h2>
       <p>The camera is used only when a user opens barcode scanning. Barcode images are processed on the device and are not retained or uploaded by PackSort.</p>
@@ -40,7 +51,7 @@
       <p>PackSort does not sell personal information. Data processed by Firebase is handled by Google as a service provider to operate authentication and access controls. PackSort does not share user data for advertising or marketing.</p>
 
       <h2>Retention and deletion</h2>
-      <p>Local scan history can be cleared in the app, and local app data can be removed by uninstalling PackSort or through device-management controls. Authentication records remain until the PackSort administrator deletes the Firebase user. Firebase installation records follow Google's published retention practices.</p>
+      <p>Local scan history can be cleared in the app, and local app data can be removed by uninstalling PackSort or through device-management controls. Resolved wrong-driver reports are deleted after 90 days. Authentication records remain until the PackSort administrator deletes the Firebase user. Firebase installation records follow Google's published retention practices.</p>
       <p>To request deletion of an account or associated authentication information, email <a href="mailto:kunwarpadda46@gmail.com?subject=PackSort%20data%20deletion%20request">kunwarpadda46@gmail.com</a>. Include the email address used to sign in so the administrator can identify the correct account.</p>
 
       <h2>Security</h2>
